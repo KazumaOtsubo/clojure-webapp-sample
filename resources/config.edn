@@ -2,10 +2,18 @@
  {:duct.core/project-ns isomorphic-clojure-webapp
 
   :duct.router/reitit
-  {:routes [["/" {:get #ig/ref :isomorphic-clojure-webapp.handler.app/index}]]}
+  {:routes [["/" {:get #ig/ref :isomorphic-clojure-webapp.handler.app/index}]
+            ["/tasks" {:get #ig/ref :isomorphic-clojure-webapp.handler.task/index}]]}
 
-  :isomorphic-clojure-webapp.handler.app/index {}}
+  :isomorphic-clojure-webapp.handler.app/index {}
+  :isomorphic-clojure-webapp.handler.task/index {:db #ig/ref :duct.database.sql/hikaricp}
 
+  :duct.migrator/ragtime {:migrations [#ig/ref :migration/create_tasks_table]}
+
+  [:duct.migrator.ragtime/sql :migration/create_tasks_table]
+  {:up ["create table tasks (id integer primary key autoincrement, title varchar(100), completed_at timestamp ) "]
+   :down ["drop table tasks;"]}}
+ 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
  :duct.profile/prod  {}
