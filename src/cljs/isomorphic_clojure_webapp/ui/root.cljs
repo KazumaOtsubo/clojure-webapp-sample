@@ -4,6 +4,21 @@
    [cljs-http.client :as http]
    [cljs.core.async :refer [<! go]]))
 
+(def all-task (atom ()))
+
+(defn add-todo
+  [title]
+  (go
+    (let [response (<! (http/post (str "http://localhost:3000/tasks?title=" title)))]
+      (if (not (= 200 (:status response)))
+        (println "ERROR OCCURED")))))
+
+(defn get-all-tasks
+  []
+  (go
+    (let [response (<! (http/get "http://localhost:3000/tasks"))] 
+      (:body response))))
+
 (defc task-list
   [tasks]
   (if (nil? tasks)
@@ -12,6 +27,17 @@
      (for [task tasks]
        [:li {:key (:id task)}
         (:title task)])]))
+
+(defc input-todo
+  []
+  [:div
+   [:form {:action "" :method "post"}
+    [:input {:type "text"
+             :name "title"
+             :id "input_m"}]
+    [:button {:type "button"
+              :on-click (fn [] (add-todo (.-value (.getElementById js/document "input_m"))))}  
+     "ADD"]]])
 
 (defc root
   []
@@ -27,6 +53,7 @@
                        [])]
     [:div
      [:h1 "Clojure/Script Todo List"]
+     (input-todo)
      (task-list tasks)]))
 
 (comment
