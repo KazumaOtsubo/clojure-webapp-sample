@@ -5,11 +5,16 @@
   {:routes [["/" {:get #ig/ref :isomorphic-clojure-webapp.handler.app/index}]
             ["/tasks" {:get #ig/ref :isomorphic-clojure-webapp.handler.task/index
                        :post #ig/ref :isomorphic-clojure-webapp.handler.task/add-task}
-             ]]}
+             ]
+            ["/check" {:post #ig/ref :isomorphic-clojure-webapp.handler.task/check}]
+            ["/delete" {:post #ig/ref :isomorphic-clojure-webapp.handler.task/delete}]
+            ]}
 
   :isomorphic-clojure-webapp.handler.app/index {}
   :isomorphic-clojure-webapp.handler.task/index {:db #ig/ref :duct.database.sql/hikaricp}
   :isomorphic-clojure-webapp.handler.task/add-task {:db #ig/ref :duct.database.sql/hikaricp}
+  :isomorphic-clojure-webapp.handler.task/check {:db #ig/ref :duct.database.sql/hikaricp}
+  :isomorphic-clojure-webapp.handler.task/delete {:db #ig/ref :duct.database.sql/hikaricp}
 
   :duct.migrator/ragtime {:migrations [#ig/ref :migration/create_tasks_table]}
 

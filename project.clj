@@ -12,6 +12,7 @@
                  [org.clojure/spec.alpha "0.3.218"]
                  [org.xerial/sqlite-jdbc "3.34.0"]
                  [rum "0.12.9"]
+                 [clojure.java-time "0.3.3"]
                  [org.clojure/data.json "2.4.0"]]
   :plugins [[duct/lein-duct "0.12.3"]
             [lein-cloverage "1.2.2"]
